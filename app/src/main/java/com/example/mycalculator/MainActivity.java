@@ -1,26 +1,47 @@
 package com.example.mycalculator;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.os.Bundle;
-import android.view.View;
-import android.widget.TextView;
+import java.text.DecimalFormat;
 
 
 public class MainActivity extends AppCompatActivity {
     private TextView tv_Result;
-    private Double firstVar;
-    private Double secondVar;
+    private Integer first;
+    private Integer second;
     private Boolean isOperationClick;
     private String operation;
-
+    private Button send;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         tv_Result = findViewById(R.id.tv_result);
+        send = findViewById(R.id.send);
+        send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, ResultActivity.class);
+                String text = tv_Result.getText().toString();
+                intent.putExtra("key", text);
+                startActivity(intent);
+            }
+        });
     }
+
+
+
+
+
+
     public void setNumber(String numbers) {
         if (tv_Result.getText().toString().equals("0")) {
             tv_Result.setText(numbers);
@@ -66,8 +87,8 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.btn_ac:
                 tv_Result.setText("0");
-                firstVar = 0.0;
-                secondVar = 0.0;
+                first = 0;
+                second = 0;
                 break;
         }
         isOperationClick = false;
@@ -77,43 +98,43 @@ public class MainActivity extends AppCompatActivity {
     public void onOperationClick(View view) {
         switch (view.getId()) {
             case R.id.plus:
-                firstVar = Double.parseDouble(tv_Result.getText().toString());
+                first = Integer.parseInt(tv_Result.getText().toString());
                 isOperationClick = true;
                 operation = "+";
                 break;
             case R.id.minus:
-                firstVar = Double.parseDouble(tv_Result.getText().toString());
+                first = Integer.parseInt(tv_Result.getText().toString());
                 isOperationClick = true;
                 operation = "-";
                 break;
             case R.id.multiply:
-                firstVar = Double.parseDouble(tv_Result.getText().toString());
+                first = Integer.parseInt(tv_Result.getText().toString());
                 isOperationClick = true;
                 operation = "X";
                 break;
             case R.id.division:
-                firstVar = Double.parseDouble(tv_Result.getText().toString());
+                first = Integer.parseInt(tv_Result.getText().toString());
                 isOperationClick = true;
                 operation = "/";
                 break;
             case R.id.equal:
-                secondVar = Double.parseDouble(tv_Result.getText().toString());
-                Double result = 0.0;
+                second = Integer.parseInt(tv_Result.getText().toString());
+                Integer result = 0;
                 switch (operation) {
                     case "+":
-                        result = firstVar + secondVar;
+                        result = first + second;
                         tv_Result.setText(result.toString());
                         break;
                     case "-":
-                        result = firstVar - secondVar;
+                        result = first - second;
                         tv_Result.setText(result.toString());
                         break;
                     case "X":
-                        result = firstVar * secondVar;
+                        result = first * second;
                         tv_Result.setText(result.toString());
                         break;
                     case "/":
-                        result = firstVar / secondVar;
+                        result = first / second;
                         tv_Result.setText(result.toString());
                         break;
                 }
